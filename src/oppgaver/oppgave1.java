@@ -5,11 +5,11 @@ import javax.swing.JOptionPane;
 public class oppgave1 {
 
     private static volatile boolean avslutt = false; // Flagg for å kontrollere programmet
+    private static String melding = "Hallo verden!"; // Standardmelding
 
     public static void main(String[] args) {
-        // Tråd for å skrive ut standardmelding hvert 3. sekund
+        // Tråd for å skrive ut meldinger hvert 3. sekund
         Thread utskriftTråd = new Thread(() -> {
-            String melding = "Hallo verden!";
             while (!avslutt) {
                 System.out.println(melding);
                 try {
@@ -24,10 +24,12 @@ public class oppgave1 {
         Thread inputTråd = new Thread(() -> {
             while (!avslutt) {
                 String input = JOptionPane.showInputDialog("Skriv inn en melding (skriv 'quit' for å avslutte):");
-                if (input != null && input.trim().equalsIgnoreCase("quit")) {
-                    avslutt = true; // Setter flagg for å avslutte programmet
-                } else if (input != null && !input.trim().isEmpty()) {
-                    System.out.println(input); // Skriver ut brukerens melding
+                if (input != null) {
+                    if (input.trim().equalsIgnoreCase("quit")) {
+                        avslutt = true; // Setter flagg for å avslutte programmet
+                    } else if (!input.trim().isEmpty()) {
+                        melding = input; // Oppdaterer melding til den nye teksten
+                    }
                 }
             }
         });
@@ -37,4 +39,3 @@ public class oppgave1 {
         inputTråd.start();
     }
 }
-
